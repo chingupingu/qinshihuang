@@ -29,6 +29,12 @@ jobs:
         mkdir -p datasets
         # Add commands to create or copy test data files if needed
     
+    - name: Check repository info
+      run: |
+        echo "Repository: $GITHUB_REPOSITORY"
+        echo "Repository Owner: $GITHUB_REPOSITORY_OWNER"
+        echo "Repository Name: ${{ github.event.repository.name }}"
+    
     - name: Run integration tests
       run: |
         cd unify
