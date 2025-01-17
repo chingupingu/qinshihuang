@@ -2,7 +2,7 @@ import os
 import json
 import pytest
 from flask import Flask
-from app.run import app
+from run import app
 from models.PDFModel import PDFModel
 from models.CSVModel import CSVModel
 from models.JSONModel import JSONModel

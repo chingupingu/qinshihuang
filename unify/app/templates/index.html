@@ -134,13 +134,21 @@
         const data = document.getElementById('unifiedData').value;
         const container = document.getElementById('visualizationResult');
         
-        if (type === 'table') {
-            container.innerHTML = createTableView(data);
-        } else if (type === 'tree') {
-            container.innerHTML = createTreeView(data);
+        try {
+            // Store the parsed data in window.fullData for access by showDetail
+            window.fullData = JSON.parse(data);
+            
+            if (type === 'table') {
+                container.innerHTML = createTableView(window.fullData);
+            } else if (type === 'tree') {
+                container.innerHTML = createTreeView(window.fullData);
+            }
+            
+            document.getElementById('visualize-container').hidden = false;
+        } catch (error) {
+            console.error('Error visualizing data:', error);
+            container.innerHTML = '<p class="error">Error visualizing data</p>';
         }
-        
-        document.getElementById('visualize-container').hidden = false;
     }
     function createTableView(data) {
         try {
@@ -271,17 +279,24 @@
 
     function showDetail(datasetName, itemName, detailType) {
         const data = window.fullData;
+        if (!data) {
+            console.error('No data available');
+            return;
+        }
+
         let item;
         
-        // Search through all datasets to find the matching item
+        // Find the item in the data structure
         for (const dataObject of data) {
-            if (dataObject[datasetName]) {
-                item = dataObject[datasetName].find(i => i.name === itemName);
+            const dataset = dataObject[datasetName];
+            if (dataset && Array.isArray(dataset)) {
+                item = dataset.find(i => i.name === itemName);
                 if (item) break;
             }
         }
         
         if (!item || !item[detailType]) {
+            console.error('Item or detail not found');
             return;
         }
 
@@ -290,57 +305,25 @@
             <div class="dataset-section">
                 <div class="header-with-back">
                     <button onclick="showMainView()" class="back-button">← Back</button>
-                    <h4>${detailType} - ${itemName}</h4>
+                    <h4>${detailType} for ${itemName}</h4>
                 </div>`;
 
         if (Array.isArray(detailData)) {
-            // Handle array data (like employees)
-            const headers = Object.keys(detailData[0]);
-            html += '<table border="1"><thead><tr>';
-            
-            headers.forEach(header => {
-                html += `<th>${header}</th>`;
-            });
-            
-            html += '</tr></thead><tbody>';
-
-            detailData.forEach(detail => {
-                html += '<tr>';
-                headers.forEach(header => {
-                    let cellValue = detail[header];
-                    let displayValue = cellValue === null ? '' : cellValue.toString();
-                    html += `<td>${displayValue}</td>`;
-                });
-                html += '</tr>';
-            });
-
-            html += '</tbody></table>';
+            // Handle array data
+            if (detailData.length > 0 && typeof detailData[0] === 'object') {
+                html += createTable(detailData);
+            } else {
+                html += `<p>${detailData.join(', ')}</p>`;
+            }
         } else if (typeof detailData === 'object') {
-            // Handle object data (like performance)
-            html += '<table border="1"><thead><tr><th>Period</th>';
-            
-            // Get all possible value types from the first period
-            const firstPeriod = Object.values(detailData)[0];
-            const valueTypes = Object.keys(firstPeriod);
-            
-            valueTypes.forEach(type => {
-                html += `<th>${type}</th>`;
-            });
-            
-            html += '</tr></thead><tbody>';
-
-            // Create rows for each period
-            Object.entries(detailData).forEach(([period, values]) => {
-                html += `<tr><td>${period}</td>`;
-                valueTypes.forEach(type => {
-                    let value = values[type];
-                    let displayValue = value === null ? '' : value.toString();
-                    html += `<td>${displayValue}</td>`;
-                });
-                html += '</tr>';
-            });
-
-            html += '</tbody></table>';
+            // Convert object to array of {key, value} pairs for table display
+            const tableData = Object.entries(detailData).map(([key, value]) => ({
+                Key: key,
+                Value: typeof value === 'object' ? JSON.stringify(value) : value
+            }));
+            html += createTable(tableData);
+        } else {
+            html += `<p>${detailData}</p>`;
         }
 
         html += '</div>';
