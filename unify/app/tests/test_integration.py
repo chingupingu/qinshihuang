@@ -73,11 +73,9 @@ def test_individual_model_processing():
     if os.path.exists(json_path):
         json_model = JSONModel(json_path)
         json_result = json_model.get_json()
-        assert isinstance(json_result, str)
+        # For JSON model, we expect a Python dict/list directly
+        assert isinstance(json_result, (dict, list))
         assert len(json_result) > 0
-        # Verify it's valid JSON
-        json_data = json.loads(json_result)
-        assert isinstance(json_data, (dict, list))
 
     # Test PPTX processing
     pptx_path = os.path.join(TEST_FILES_DIR, "dataset4.pptx")
