@@ -52,6 +52,9 @@ def test_individual_model_processing():
         pdf_json = pdf_model.get_json()
         assert isinstance(pdf_json, str)
         assert len(pdf_json) > 0
+        # Verify it's valid JSON
+        pdf_data = json.loads(pdf_json)
+        assert isinstance(pdf_data, (dict, list))
 
     # Test CSV processing
     csv_path = os.path.join(TEST_FILES_DIR, "dataset2.csv")
@@ -59,6 +62,9 @@ def test_individual_model_processing():
         csv_model = CSVModel(csv_path)
         csv_json = csv_model.get_json()
         assert isinstance(csv_json, str)
+        # Verify it's valid JSON
+        csv_data = json.loads(csv_json)
+        assert isinstance(csv_data, (dict, list))
         csv_result = csv_model.get_csv()
         assert isinstance(csv_result, str)
 
@@ -69,6 +75,9 @@ def test_individual_model_processing():
         json_result = json_model.get_json()
         assert isinstance(json_result, str)
         assert len(json_result) > 0
+        # Verify it's valid JSON
+        json_data = json.loads(json_result)
+        assert isinstance(json_data, (dict, list))
 
     # Test PPTX processing
     pptx_path = os.path.join(TEST_FILES_DIR, "dataset4.pptx")
@@ -77,6 +86,9 @@ def test_individual_model_processing():
         pptx_json = pptx_model.get_json()
         assert isinstance(pptx_json, str)
         assert len(pptx_json) > 0
+        # Verify it's valid JSON
+        pptx_data = json.loads(pptx_json)
+        assert isinstance(pptx_data, (dict, list))
 
 def test_main_model_integration():
     file_paths = [os.path.join(TEST_FILES_DIR, f) for f in os.listdir(TEST_FILES_DIR) 
