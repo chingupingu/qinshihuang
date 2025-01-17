@@ -11,7 +11,7 @@ from app.models.MainModel import MainModel
 
 # Add this at the top after imports
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_FILES_DIR = os.path.join(CURRENT_DIR, "..", "..", "testfiles")
+TEST_FILES_DIR = os.path.join(CURRENT_DIR, "testfiles")
 
 @pytest.fixture
 def client():
