@@ -38,4 +38,4 @@ jobs:
     - name: Run integration tests
       run: |
         cd unify
-        python -m pytest app/tests/test_integration.py -v --rootdir=/home/runner/work/chingupingu/qinshihuang
+        python -m pytest app/tests/test_integration.py -v --rootdir=/home/runner/work/qinshihuang/qinshihuang
