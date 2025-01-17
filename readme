@@ -1,0 +1,30 @@
+how to run app:
+
+1. cd backend
+2. python -m venv venv
+3. source venv/bin/activate
+4. pip install -r requirements.txt
+5. python run.py
+
+frontend:
+1. copy paste this url into your browser: http://127.0.0.1:5000/
+
+endpoints:
+http://127.0.0.1:5000 - base url
+/api/data - returns a unified json of all the data
+/api/data/<string:file_type> - returns a unified json of all the files of the specified file type
+
+backend: python, python flask
+frontend: html, vanilla css, vanilla js, python flask render
+
+how to use the app:
+# uploading files
+1. choose files to upload
+2. click upload
+# unifying data
+3. select the file type to unify by [csv/json/pdf/pptx]
+4. click unify
+5. click the "Jump to Data" button to jump to the unified data
+# visualizing data
+6. select a visualization option [table/tree]
+7. click visualize
