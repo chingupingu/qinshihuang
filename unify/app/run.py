@@ -3,7 +3,7 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from routes import register_routes
+from app.routes import register_routes
 
 app = Flask(__name__)
 CORS(app)

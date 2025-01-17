@@ -2,17 +2,12 @@ import os
 import json
 import pytest
 from flask import Flask
-import sys
-
-# Add the unify directory to the Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-
 from app.run import app
-from app.models.PDFModel import PDFModel
-from app.models.CSVModel import CSVModel
-from app.models.JSONModel import JSONModel
-from app.models.PPTXModel import PPTXModel
-from app.models.MainModel import MainModel
+from models.PDFModel import PDFModel
+from models.CSVModel import CSVModel
+from models.JSONModel import JSONModel
+from models.PPTXModel import PPTXModel
+from models.MainModel import MainModel
 
 @pytest.fixture
 def client():
