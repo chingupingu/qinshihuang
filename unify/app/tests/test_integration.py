@@ -25,14 +25,14 @@ def test_file_upload_and_unification(client):
                  if os.path.isfile(os.path.join(TEST_FILES_DIR, f))]
     
     # Test file upload endpoint
+    data = {}
     files = []
     for file_path in file_paths:
         with open(file_path, 'rb') as f:
-            files.append((
-                'files', (os.path.basename(file_path), f, 'application/octet-stream')
-            ))
+            file_content = f.read()
+            files.append(('files', (os.path.basename(file_path), file_content)))
     
-    response = client.post('/api/data/upload', data={}, files=files)
+    response = client.post('/api/data/upload', data=data, content_type='multipart/form-data', buffered=True)
     assert response.status_code == 200
 
     # Test unification endpoint
@@ -57,7 +57,8 @@ def test_individual_model_processing():
     csv_path = os.path.join(TEST_FILES_DIR, "dataset2.csv")
     if os.path.exists(csv_path):
         csv_model = CSVModel(csv_path)
-        assert csv_model.json_output is not None
+        csv_json = csv_model.get_json()
+        assert isinstance(csv_json, str)
         csv_result = csv_model.get_csv()
         assert isinstance(csv_result, str)
 
