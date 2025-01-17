@@ -31,5 +31,5 @@ jobs:
     
     - name: Run integration tests
       run: |
-        cd unify/app/tests
-        pytest test_integration.py -v 
+        cd unify
+        python -m pytest app/tests/test_integration.py -v 
