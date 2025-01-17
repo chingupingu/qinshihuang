@@ -25,15 +25,18 @@ def test_file_upload_and_unification(client):
                  if os.path.isfile(os.path.join(TEST_FILES_DIR, f))]
     
     # Test file upload endpoint
+    files = []
     for file_path in file_paths:
         with open(file_path, 'rb') as f:
-            response = client.post('/upload', data={
-                'file': (f, os.path.basename(file_path))
-            })
-            assert response.status_code == 200
+            files.append((
+                'files', (os.path.basename(file_path), f, 'application/octet-stream')
+            ))
+    
+    response = client.post('/api/data/upload', data={}, files=files)
+    assert response.status_code == 200
 
     # Test unification endpoint
-    response = client.post('/unify', json={'fileType': 'all'})
+    response = client.get('/api/data')
     assert response.status_code == 200
     
     # Verify response structure
