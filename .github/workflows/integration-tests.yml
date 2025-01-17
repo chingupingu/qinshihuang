@@ -24,18 +24,12 @@ jobs:
         pip install pytest flask
         pip install -r unify/app/requirements.txt
     
-    - name: Create test datasets directory
+    - name: Create test files directory
       run: |
-        mkdir -p datasets
+        mkdir -p testfiles
         # Add commands to create or copy test data files if needed
-    
-    - name: Check repository info
-      run: |
-        echo "Repository: $GITHUB_REPOSITORY"
-        echo "Repository Owner: $GITHUB_REPOSITORY_OWNER"
-        echo "Repository Name: ${{ github.event.repository.name }}"
     
     - name: Run integration tests
       run: |
         cd unify
-        python -m pytest app/tests/test_integration.py -v --rootdir=/home/runner/work/qinshihuang/qinshihuang
+        PYTHONPATH=$PYTHONPATH:$(pwd)/app pytest app/tests/test_integration.py -v
