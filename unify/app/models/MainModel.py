@@ -1,8 +1,8 @@
 import json
-from models.PDFModel import PDFModel
-from models.CSVModel import CSVModel
-from models.JSONModel import JSONModel
-from models.PPTXModel import PPTXModel
+from app.models.PDFModel import PDFModel
+from app.models.CSVModel import CSVModel
+from app.models.JSONModel import JSONModel
+from app.models.PPTXModel import PPTXModel
 
 class MainModel:
     def __init__(self, input_paths):

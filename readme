@@ -1,30 +1,69 @@
-how to run app:
+overview:
+- backend: python, python flask
+- frontend: html, vanilla css, vanilla js, python flask render
+- in unify/app/models, there are 5 models: PDFModel, CSVModel, JSONModel, PPTXModel, and MainModel
+- the 4 models (PDFModel, CSVModel, JSONModel, PPTXModel) all have 1 main function: get_json() 
+(please ignore the other function, i created them bc i misinterpreted one of the requirements)
+- MainModel is the main model that has a function to read from the inputs folder and returns a unified json by
+calling get_json() from the other 4 models
+- routes.py contains the endpoints for the frontend to access the backend, as well as the html for the frontend
+- endpoints:
+    - http://127.0.0.1:5000 - base url (and also the frontend html page)
+    - /api/data - returns a unified json of all the data
+    - /api/data/<string:file_type> - returns a unified json of all the files of the specified file type
 
+remarks about index.html:
+- most of the logic and formatting of data etc is done in vanilla js; the only time it relies on the backend is to call
+the endpoints listed in routes.py
+- visualization process is also done in vanilla js
+- it is a single page app, hence the codebase might look very messy
+
+testing:
+- i did unit testing for the models using test.py (comment out the tests i don't want to run)
+- integration testing was done by calling the endpoints in postman
+- i can't seem to make github actions work, so i'm just running the tests manually :-( sorry
+
+how to run unit tests:
+- edit test.py file by commenting out the tests you don't want to run
+- cd unify/app/tests
+- python test.py
+
+how to run integration test:
+- run the app
+- put files into inputs folder
+- call the endpoints in postman
+
+how to run app:
 1. cd backend
 2. python -m venv venv
 3. source venv/bin/activate
 4. pip install -r requirements.txt
 5. python run.py
 
-frontend:
-1. copy paste this url into your browser: http://127.0.0.1:5000/
-
-endpoints:
-http://127.0.0.1:5000 - base url
-/api/data - returns a unified json of all the data
-/api/data/<string:file_type> - returns a unified json of all the files of the specified file type
-
-backend: python, python flask
-frontend: html, vanilla css, vanilla js, python flask render
-
 how to use the app:
+1. to access the frontend, copy paste this url into your browser: http://127.0.0.1:5000/
 # uploading files
-1. choose files to upload
-2. click upload
+2. choose files to upload
+3. click upload
 # unifying data
-3. select the file type to unify by [csv/json/pdf/pptx]
-4. click unify
-5. click the "Jump to Data" button to jump to the unified data
+4. select the file type to unify by [csv/json/pdf/pptx]
+5. click unify
+6. click the "Jump to Data" button to jump to the unified data
 # visualizing data
-6. select a visualization option [table/tree]
-7. click visualize
+7. select a visualization option [table/tree]
+8. click visualize
+
+challenges:
+- i think my biggest challenge was the time constraint, doing it in 3 days is quite challenging but def possible. but
+doing it while organising gravical is almost impossible and i wasn't able to finish it within the time frame you
+gave me oops
+- in hindsight i should have started this task at a later date when i'm more free
+- second challenge was the data visualisation, i admit i suck at frontend stuff like js and css, so
+i used chatgpt to help w the coding and troubleshooting; the design and layout choices were still dictated by me ofc
+- i also interpreted one of the requirements incorrectly, i thought i had to convert the unified data into
+the specified file type, hence you can see a bunch of extra code that performs just that
+
+assumptions:
+- i assumed that you only need to display the data in a json format, no need to merge the data
+- i assumed that i shouldn't be using readily available libraries that already have the functionality of unifying data
+

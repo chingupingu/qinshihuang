@@ -1,35 +1,35 @@
-name: Integration Tests
+# name: Integration Tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+#     steps:
+#     - uses: actions/checkout@v2
     
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+#     - name: Set up Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.x'
     
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest flask
-        pip install -r unify/app/requirements.txt
+#     - name: Install dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install pytest flask
+#         pip install -r unify/app/requirements.txt
     
-    - name: Create test files directory
-      run: |
-        mkdir -p testfiles
-        # Add commands to create or copy test data files if needed
+#     - name: Create test files directory
+#       run: |
+#         mkdir -p testfiles
+#         # Add commands to create or copy test data files if needed
     
-    - name: Run integration tests
-      run: |
-        cd unify
-        PYTHONPATH=$PYTHONPATH:$(pwd)/app pytest app/tests/test_integration.py -v
+#     - name: Run integration tests
+#       run: |
+#         cd unify
+#         PYTHONPATH=$PYTHONPATH:$(pwd)/app pytest app/tests/test_integration.py -v
