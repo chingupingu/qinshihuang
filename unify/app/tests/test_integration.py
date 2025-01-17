@@ -78,11 +78,11 @@ def test_main_model_integration():
     file_paths = [os.path.join(TEST_FILES_DIR, f) for f in os.listdir(TEST_FILES_DIR) 
                  if os.path.isfile(os.path.join(TEST_FILES_DIR, f))]
     
-    ingestion = MainModel(file_paths)
-    all_json_data = ingestion.ingest_inputs()
+    main_model = MainModel(file_paths)
+    unified_json = main_model.unified_json
     
     # Verify the unified data structure
-    assert isinstance(all_json_data, str)
-    data = json.loads(all_json_data)
+    assert isinstance(unified_json, str)
+    data = json.loads(unified_json)
     assert isinstance(data, list)
     assert len(data) > 0 
