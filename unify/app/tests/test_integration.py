@@ -32,7 +32,11 @@ def test_file_upload_and_unification(client):
             file_content = f.read()
             files.append(('files', (os.path.basename(file_path), file_content)))
     
-    response = client.post('/api/data/upload', data=data, content_type='multipart/form-data', buffered=True)
+    response = client.post('/api/data/upload', 
+                         data=data, 
+                         content_type='multipart/form-data',
+                         buffered=True,
+                         files=files)
     assert response.status_code == 200
 
     # Test unification endpoint
