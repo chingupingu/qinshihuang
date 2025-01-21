@@ -18,27 +18,37 @@ the endpoints listed in routes.py
 - visualization process is also done in vanilla js
 - it is a single page app, hence the codebase might look very messy
 
+========================================
+========================================
+
 testing:
-- i did unit testing for the models using test.py (comment out the tests i don't want to run)
-- integration testing was done by calling the endpoints in postman
-- i can't seem to make github actions work, so i'm just running the tests manually :-( sorry
+- to run all tests together:
+    - open terminal
+    - cd unify/app/tests
+    - run command: "pytest -v -s"
+- i can't seem to make github actions work
 
 how to run unit tests:
-- edit test.py file by commenting out the tests you don't want to run
+- open terminal
 - cd unify/app/tests
-- python test.py
+- run command: "pytest test_unit.py-v -s"
 
 how to run integration test:
-- run the app
-- put files into inputs folder
-- call the endpoints in postman
+- open terminal
+- cd unify/app/tests
+- run command: "pytest test_unit.py-v -s"
+
+========================================
+========================================
 
 how to run app:
-1. cd backend
-2. python -m venv venv
-3. source venv/bin/activate
-4. pip install -r requirements.txt
-5. python run.py
+1. in project root directory, create virtual environment with command "python -m venv .venv"
+2. activate virtual environment with command "source .venv/bin/activate" (mac) or ".venv\Scripts\activate" (windows)
+3. pip install -r requirements.txt
+4. cd unify
+5. python run.py / python3 run.py
+6. to stop the app, press ctrl+c
+7. when done with app, deactivate virtual environment with command "deactivate"
 
 how to use the app:
 1. to access the frontend, copy paste this url into your browser: http://127.0.0.1:5000/
@@ -52,6 +62,9 @@ how to use the app:
 # visualizing data
 7. select a visualization option [table/tree]
 8. click visualize
+
+========================================
+========================================
 
 challenges:
 - i think my biggest challenge was the time constraint, doing it in 3 days is quite challenging but def possible. but

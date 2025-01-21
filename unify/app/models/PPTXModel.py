@@ -23,30 +23,30 @@ class PPTXModel:
         self.read_pptx()
         return self.json_output
 
-    ### 2. Return json as PPTX ###
-    def get_pptx(self, return_buffer=False):
-        try:
-            pptx_buffer = BytesIO()
-            # Parse the JSON string into a Python list
-            slides_data = json.loads(self.json_output)
-            prs = self.write_json_to_pptx(slides_data)
+    # ### 2. Return json as PPTX ###
+    # def get_pptx(self, return_buffer=False):
+    #     try:
+    #         pptx_buffer = BytesIO()
+    #         # Parse the JSON string into a Python list
+    #         slides_data = json.loads(self.json_output)
+    #         prs = self.write_json_to_pptx(slides_data)
             
-            # Save the presentation to the buffer
-            prs.save(pptx_buffer)
-            pptx_buffer.seek(0)  # Reset buffer position to the start
+    #         # Save the presentation to the buffer
+    #         prs.save(pptx_buffer)
+    #         pptx_buffer.seek(0)  # Reset buffer position to the start
 
-            if return_buffer:
-                return pptx_buffer
+    #         if return_buffer:
+    #             return pptx_buffer
 
-            # Return the PPTX as a file
-            return send_file(
-                pptx_buffer,
-                mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                as_attachment=False
-            )
+    #         # Return the PPTX as a file
+    #         return send_file(
+    #             pptx_buffer,
+    #             mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    #             as_attachment=False
+    #         )
 
-        except Exception as e:
-            raise Exception(f"Error converting JSON to PPTX: {str(e)}")
+    #     except Exception as e:
+    #         raise Exception(f"Error converting JSON to PPTX: {str(e)}")
 
 
     ########################
@@ -99,7 +99,7 @@ class PPTXModel:
                 processed_data = self.process_content(slide_content)
                 ret.append(processed_data)
 
-            self.json_output = ret
+            self.json_output = json.dumps(ret)
             return None
 
         except Exception as e:
@@ -145,54 +145,54 @@ class PPTXModel:
 
         return result
             
-    ### Write JSON to PPTX ###
-    def write_json_to_pptx(self, slides_data):
-        prs = Presentation()
+    # ### Write JSON to PPTX ###
+    # def write_json_to_pptx(self, slides_data):
+    #     prs = Presentation()
 
-        # Iterate over each slide's data
-        for slide_data in slides_data:
-            # Add a new slide
-            slide_layout = prs.slide_layouts[5]  # Use a blank slide layout
-            slide = prs.slides.add_slide(slide_layout)
+    #     # Iterate over each slide's data
+    #     for slide_data in slides_data:
+    #         # Add a new slide
+    #         slide_layout = prs.slide_layouts[5]  # Use a blank slide layout
+    #         slide = prs.slides.add_slide(slide_layout)
 
-            # Add title if available
-            for title, content in slide_data.items():
-                if title:
-                    title_shape = slide.shapes.title
-                    title_shape.text = title
+    #         # Add title if available
+    #         for title, content in slide_data.items():
+    #             if title:
+    #                 title_shape = slide.shapes.title
+    #                 title_shape.text = title
 
-                # Check if content is a list (table data) or dict (subtitle)
-                if isinstance(content, list):
-                    # Add table
-                    rows, cols = len(content) + 1, len(content[0])
-                    left = top = Inches(2.0)
-                    width = Inches(6.0)
-                    height = Inches(0.8)
-                    table = slide.shapes.add_table(rows, cols, left, top, width, height).table
+    #             # Check if content is a list (table data) or dict (subtitle)
+    #             if isinstance(content, list):
+    #                 # Add table
+    #                 rows, cols = len(content) + 1, len(content[0])
+    #                 left = top = Inches(2.0)
+    #                 width = Inches(6.0)
+    #                 height = Inches(0.8)
+    #                 table = slide.shapes.add_table(rows, cols, left, top, width, height).table
 
-                    # Set column headings
-                    for i, header in enumerate(content[0].keys()):
-                        table.cell(0, i).text = header
+    #                 # Set column headings
+    #                 for i, header in enumerate(content[0].keys()):
+    #                     table.cell(0, i).text = header
 
-                    # Add data to table
-                    for row_idx, row_data in enumerate(content, start=1):
-                        for col_idx, (key, value) in enumerate(row_data.items()):
-                            table.cell(row_idx, col_idx).text = value
-                elif isinstance(content, dict):
-                    # Add subtitle and bullet points
-                    left = Inches(1.0)
-                    top = Inches(2.0)
-                    width = height = Inches(5.0)
-                    textbox = slide.shapes.add_textbox(left, top, width, height)
-                    text_frame = textbox.text_frame
+    #                 # Add data to table
+    #                 for row_idx, row_data in enumerate(content, start=1):
+    #                     for col_idx, (key, value) in enumerate(row_data.items()):
+    #                         table.cell(row_idx, col_idx).text = value
+    #             elif isinstance(content, dict):
+    #                 # Add subtitle and bullet points
+    #                 left = Inches(1.0)
+    #                 top = Inches(2.0)
+    #                 width = height = Inches(5.0)
+    #                 textbox = slide.shapes.add_textbox(left, top, width, height)
+    #                 text_frame = textbox.text_frame
 
-                    for subtitle, items in content.items():
-                        p = text_frame.add_paragraph()
-                        p.text = subtitle
-                        for item in items:
-                            for key, value in item.items():
-                                bullet = text_frame.add_paragraph()
-                                bullet.text = f"{key}: {value}"
-                                bullet.level = 1
+    #                 for subtitle, items in content.items():
+    #                     p = text_frame.add_paragraph()
+    #                     p.text = subtitle
+    #                     for item in items:
+    #                         for key, value in item.items():
+    #                             bullet = text_frame.add_paragraph()
+    #                             bullet.text = f"{key}: {value}"
+    #                             bullet.level = 1
 
-        return prs
+    #     return prs

@@ -111,7 +111,7 @@
             const response = await fetch(filetype === 'all' ? '/api/data' : `/api/data/${filetype}`);
             const unifiedData = await response.json();
             const textarea = document.getElementById('unifiedData');
-            textarea.value = JSON.stringify(unifiedData, null, 2);
+            textarea.value = JSON.stringify(unifiedData, null, 4);
             autoResizeTextarea(textarea);
             const messageDiv = document.getElementById('message');
             messageDiv.className = 'success';

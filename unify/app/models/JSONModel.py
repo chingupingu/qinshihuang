@@ -24,7 +24,7 @@ class JSONModel:
         try:
             with open(self.input_path, 'r') as file:
                 self.data = json.load(file)
-                self.json_output = self.data
+                self.json_output = json.dumps(self.data)
             return True
         
         except FileNotFoundError:

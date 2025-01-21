@@ -1,8 +1,8 @@
 import json
-from app.models.PDFModel import PDFModel
-from app.models.CSVModel import CSVModel
-from app.models.JSONModel import JSONModel
-from app.models.PPTXModel import PPTXModel
+from .PDFModel import PDFModel
+from .CSVModel import CSVModel
+from .JSONModel import JSONModel
+from .PPTXModel import PPTXModel
 
 class MainModel:
     def __init__(self, input_paths):
@@ -34,16 +34,16 @@ class MainModel:
                     json_results.append(json.loads(csv_model.get_json()))
                 elif self.file_types[path] == 'json':
                     json_model = JSONModel(path)
-                    json_results.append(json_model.get_json())
+                    json_results.append(json.loads(json_model.get_json()))
                 elif self.file_types[path] == 'pptx':
                     pptx_model = PPTXModel(path)
-                    json_results.append(pptx_model.get_json())
-            return json.dumps(json_results, indent=2)
+                    json_results.append(json.loads(pptx_model.get_json()))
+            return json.dumps(json_results)
         
         except Exception as e:
             return json.dumps({
                 "error": f"Failed to ingest inputs: {str(e)}"
-            }, indent=2)
+            })
         
 # ignore this
 

@@ -1,5 +1,5 @@
 from flask import Flask, send_file, jsonify, request, render_template
-from models.MainModel import MainModel
+from .models.MainModel import MainModel
 import os
 def register_routes(app):
 
@@ -33,7 +33,7 @@ def register_routes(app):
         
     @app.route('/api/data', methods=['GET'])
     def get_json():
-        input_folder = "inputs"
+        input_folder = app.config.get('INPUT_FOLDER', 'inputs')
         file_paths = [os.path.join(input_folder, f) for f in os.listdir(input_folder) if os.path.isfile(os.path.join(input_folder, f))]
         unified_json = MainModel(file_paths).unify_to_json()
         # Since unified_json is already a JSON string, return it directly
@@ -45,7 +45,7 @@ def register_routes(app):
 
     @app.route('/api/data/<string:file_type>', methods=['GET'])
     def get_data_by_type(file_type):
-        input_folder = "inputs"
+        input_folder = app.config.get('INPUT_FOLDER', 'inputs')
         file_paths = [os.path.join(input_folder, f) for f in os.listdir(input_folder) if os.path.isfile(os.path.join(input_folder, f))]
         search_list = []
         if file_type == "pdf":

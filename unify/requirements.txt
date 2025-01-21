@@ -1,5 +1,0 @@
-flask
-pytest
-python-pptx
-PyPDF2
-pandas 
